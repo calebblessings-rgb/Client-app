@@ -78,5 +78,36 @@ def create_product():
 
     return product, 201
 
+@app.patch("/products/<int:product_id>")
+def update_product(product_id):
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return {
+            "message": "You must be signed in"
+        }, 401
+
+    data = request.get_json()
+
+    for product in products:
+        if product["id"] == product_id:
+
+            if product["user_id"] != user_id:
+                return {
+                    "message": "You cannot edit this product"
+                }, 403
+
+            if "name" in data:
+                product["name"] = data["name"]
+
+            if "price" in data:
+                product["price"] = data["price"]
+
+            return product, 200
+
+    return {
+        "message": "Product not found"
+    }, 404
+
 if __name__ == "__main__":
     app.run(debug=True)
