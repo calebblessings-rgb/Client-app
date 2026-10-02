@@ -1,6 +1,16 @@
 from flask import Flask, request, session
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+CORS(
+    app,
+    origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173"
+    ],
+    supports_credentials=True
+)
 
 app.secret_key = "dev-secret-key"
 
