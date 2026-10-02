@@ -56,5 +56,27 @@ products = []
 def get_products():
     return products
 
+@app.post("/products")
+def create_product():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return {
+            "message": "You must be signed in"
+        }, 401
+
+    data = request.get_json()
+
+    product = {
+        "id": len(products) + 1,
+        "name": data.get("name"),
+        "price": data.get("price"),
+        "user_id": user_id
+    }
+
+    products.append(product)
+
+    return product, 201
+
 if __name__ == "__main__":
     app.run(debug=True)
