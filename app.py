@@ -49,5 +49,12 @@ def current_user():
         "user_id": user_id
     }
 
+products = []
+
+
+@app.get("/products")
+def get_products():
+    return products
+
 if __name__ == "__main__":
     app.run(debug=True)
