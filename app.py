@@ -109,5 +109,32 @@ def update_product(product_id):
         "message": "Product not found"
     }, 404
 
+@app.delete("/products/<int:product_id>")
+def delete_product(product_id):
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return {
+            "message": "You must be signed in"
+        }, 401
+
+    for product in products:
+        if product["id"] == product_id:
+
+            if product["user_id"] != user_id:
+                return {
+                    "message": "You cannot delete this product"
+                }, 403
+
+            products.remove(product)
+
+            return {
+                "message": "Product deleted successfully"
+            }, 200
+
+    return {
+        "message": "Product not found"
+    }, 404
+
 if __name__ == "__main__":
     app.run(debug=True)
