@@ -35,6 +35,19 @@ def signin():
         "message": "Invalid email or password"
     }, 401
 
+@app.get("/me")
+def current_user():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return {
+            "message": "User not signed in"
+        }, 401
+
+    return {
+        "message": "User is signed in",
+        "user_id": user_id
+    }
 
 if __name__ == "__main__":
     app.run(debug=True)
