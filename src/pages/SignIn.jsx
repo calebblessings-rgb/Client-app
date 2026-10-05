@@ -1,18 +1,29 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { signIn } from "../services/api";
 
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
-    localStorage.setItem("token", "demo-token");
+    setError("");
+    setLoading(true);
 
-    navigate("/products");
+    try {
+      await signIn(email, password);
+      navigate("/products");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -43,7 +54,11 @@ function SignIn() {
             required
           />
 
-          <button type="submit">Sign In</button>
+          {error && <p>{error}</p>}
+
+          <button type="submit" disabled={loading}>
+            {loading ? "Signing in..." : "Sign In"}
+          </button>
         </form>
       </div>
     </div>
