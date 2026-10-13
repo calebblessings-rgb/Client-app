@@ -26,42 +26,52 @@ function SignIn() {
     }
   }
 
-  return (
-    <div className="signin-page">
-      <div className="signin-card">
-        <h1>Sign In</h1>
-
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="email">Email</label>
-
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder="Enter your email"
-            required
-          />
-
-          <label htmlFor="password">Password</label>
-
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            placeholder="Enter your password"
-            required
-          />
-
-          {error && <p>{error}</p>}
-
-          <button type="submit" disabled={loading}>
-            {loading ? "Signing in..." : "Sign In"}
+return (
+    <main className="signin-page">
+      <section className="signin-card" aria-labelledby="signin-title">
+        <header className="page-header">
+          <p className="eyebrow">Product Manager</p>
+          <h1 id="signin-title">Welcome back</h1>
+          <p className="page-intro">Sign in to manage your products.</p>
+        </header>
+        <form className="signin-form" onSubmit={handleSubmit}>
+          <div className="form-field">
+            <label htmlFor="email">Email address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="you@example.com"
+              autoComplete="email"
+              required
+            />
+          </div>
+          <div className="form-field">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="Enter your password"
+              autoComplete="current-password"
+              required
+            />
+          </div>
+          {error && (
+            <p className="form-message form-message--error" role="alert">
+              {error}
+            </p>
+          )}
+          <button className="button button--primary" type="submit" disabled={loading}>
+            {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
 
